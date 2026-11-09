@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suara Kita</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo" onclick="showPage('home')">
+            suara<span>kita.</span>
+        </div>
+
+        <nav>
+            <button onclick="showPage('home')">Beranda</button>
+            <button onclick="showPage('aspirasi')">Aspirasi</button>
+            <button onclick="showPage('ekspresi')">Ruang Ekspresi</button>
+            <button onclick="showPage('lacak')">Lacak Pesan</button>
+        </nav>
+    </div>
+
+    <div class="menu-area">
+        <button class="menu-button" onclick="toggleMenu()" aria-label="Buka menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div id="dropdownMenu" class="dropdown-menu">
+
+            <button onclick="menuNavigate('login')">
+                <span>♙</span>
+                Login OSIS
+            </button>
+
+            <button onclick="menuNavigate('keterangan')">
+                <span>ⓘ</span>
+                Keterangan
+            </button>
+
+            <button onclick="menuNavigate('fitur')">
+                <span>▦</span>
+                Fitur
+            </button>
+
+            <button onclick="menuNavigate('perjanjian')">
+                <span>▤</span>
+                Perjanjian
+            </button>
+
+            <div class="menu-divider"></div>
+
+            <button onclick="toggleSettings()">
+                <span>⚙</span>
+                Setting
+            </button>
+
+            <div id="settingsPanel" class="settings-panel">
+                <h3>Pengaturan</h3>
+
+                <div class="setting-item">
+                    <span>Mode tampilan</span>
+                    <button id="themeToggle" onclick="toggleTheme()">
+                        Mode Gelap
+                    </button>
+                </div>
+
+                <div class="setting-item">
+                    <span>Ukuran teks</span>
+                    <select id="fontSetting" onchange="changeFontSize()">
+                        <option value="normal">Normal</option>
+                        <option value="large">Besar</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</header>
+
+
+<main>
+
+    <!-- BERANDA -->
+    <section id="home" class="page active">
+        <div class="content home-content">
+            <p class="tag">RUANG SUARA SISWA</p>
+
+            <h1>Suaramu punya<br>tempat di sini.</h1>
+
+            <p>
+                Tempat untuk menyampaikan pendapat, keluhan,
+                ide, dan cerita tentang lingkungan sekolah.
+            </p>
+
+            <div class="button-group">
+                <button class="primary" onclick="showPage('aspirasi')">
+                    Kirim Aspirasi
+                </button>
+
+                <button class="secondary" onclick="showPage('ekspresi')">
+                    Ruang Ekspresi
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ASPIRASI -->
+    <section id="aspirasi" class="page">
+        <div class="content">
+            <p class="tag">SUARA KAMU</p>
+            <h1>Aspirasi Sekolah</h1>
+
+            <p>Sampaikan hal yang menurutmu perlu diperbaiki.</p>
+
+            <form id="aspirasiForm">
+                <input type="text" id="nama" placeholder="Nama (opsional)">
+                <input type="text" id="kelas" placeholder="Kelas (opsional)">
+
+                <select id="kategori" required>
+                    <option value="">Pilih kategori</option>
+                    <option>Fasilitas</option>
+                    <option>Kebersihan</option>
+                    <option>Kedisiplinan</option>
+                    <option>Pembelajaran</option>
+                    <option>Kegiatan sekolah</option>
+                    <option>Organisasi siswa</option>
+                    <option>Lingkungan sekolah</option>
+                    <option>Lainnya</option>
+                </select>
+
+                <textarea id="pesan" placeholder="Tuliskan aspirasi kamu..." required></textarea>
+                <textarea id="saran" placeholder="Saran tambahan (opsional)"></textarea>
+
+                <button class="primary">Kirim Aspirasi</button>
+            </form>
+        </div>
+    </section>
+
+
+    <!-- RUANG EKSPRESI -->
+<section id="ekspresi" class="page">
+    <div class="coming-soon">
+        <div class="coming-icon">✦</div>
+
+        <p class="tag">RUANG EKSPRESI</p>
+
+        <h1>Something is<br>coming soon.</h1>
+
+        <p>
+            Kami sedang menyiapkan ruang baru
+            untuk menyampaikan pesan dan berbagi cerita.
+        </p>
+
+        <span class="coming-label">COMING SOON</span>
+
+        <button class="secondary" onclick="showPage('home')">
+            ← Kembali ke Beranda
+        </button>
+    </div>
+</section>
+
+    <!-- LACAK PESAN -->
+    <section id="lacak" class="page">
+        <div class="content">
+            <p class="tag">PELACAKAN</p>
+            <h1>Lacak Pesan</h1>
+
+            <p>Masukkan kode yang kamu dapatkan setelah mengirim pesan.</p>
+
+            <form id="lacakForm">
+                <input type="text" id="kodeLacak" placeholder="Contoh: SK-ABC123" required>
+                <button class="primary">Lacak Sekarang</button>
+            </form>
+
+            <div id="hasilLacak"></div>
+        </div>
+    </section>
+
+
+    <!-- KETERANGAN -->
+    <section id="keterangan" class="page">
+        <div class="content">
+            <p class="tag">TENTANG PLATFORM</p>
+            <h1>Apa itu Suara Kita?</h1>
+
+            <p>
+                Suara Kita merupakan ruang digital untuk siswa
+                menyampaikan aspirasi dan ekspresi mengenai
+                kehidupan sekolah.
+            </p>
+
+            <p>
+                Setiap pesan yang masuk dapat ditinjau oleh
+                pengelola sebelum ditindaklanjuti.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- FITUR -->
+    <section id="fitur" class="page">
+        <div class="content">
+            <p class="tag">YANG BISA KAMU LAKUKAN</p>
+            <h1>Fitur Suara Kita</h1>
+
+            <div class="feature-list">
+                <div class="feature-card">
+                    <h3>Aspirasi Sekolah</h3>
+                    <p>Kirim pendapat dan keluhan mengenai sekolah.</p>
+                    <button onclick="showPage('aspirasi')">Buka →</button>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Ruang Ekspresi</h3>
+                    <p>Sampaikan pesan dan apresiasi kepada seseorang.</p>
+                    <button onclick="showPage('ekspresi')">Buka →</button>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Lacak Pesan</h3>
+                    <p>Pantau perkembangan pesan menggunakan kode.</p>
+                    <button onclick="showPage('lacak')">Buka →</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- PERJANJIAN -->
+    <section id="perjanjian" class="page">
+        <div class="content">
+            <p class="tag">ATURAN PENGGUNAAN</p>
+            <h1>Perjanjian Pengguna</h1>
+
+            <div class="agreement">
+                <p>1. Gunakan platform dengan sopan dan bertanggung jawab.</p>
+                <p>2. Dilarang mengirim ancaman, hinaan, atau fitnah.</p>
+                <p>3. Jangan membagikan informasi pribadi orang lain.</p>
+                <p>4. Pesan dapat ditinjau oleh pengelola.</p>
+                <p>5. Pesan yang melanggar aturan dapat ditolak.</p>
+                <p>6. Jangan menggunakan fitur untuk mengganggu orang lain.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- LOGIN -->
+    <section id="login" class="page">
+        <div class="login-box">
+            <p class="tag">AREA PENGELOLA</p>
+            <h1>Login OSIS</h1>
+            <p>Masuk untuk mengelola pesan yang diterima.</p>
+
+            <form id="loginForm">
+                <input type="email" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button class="primary">Masuk Dashboard</button>
+            </form>
+
+            <p id="loginError" class="error"></p>
+
+            <button class="back-button" onclick="showPage('home')">
+                ← Kembali ke beranda
+            </button>
+        </div>
+    </section>
+
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page">
+        <div class="dashboard-container">
+
+            <div class="dashboard-header">
+                <div>
+                    <p class="tag">PANEL PENGELOLA</p>
+                    <h1>Dashboard OSIS</h1>
+                    <p>Selamat datang, <span id="adminName">Admin</span>.</p>
+                </div>
+
+                <button class="logout-button" onclick="logout()">Keluar</button>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <span>Total Pesan</span>
+                    <h2 id="totalPesan">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <span>Aspirasi</span>
+                    <h2 id="totalAspirasi">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <span>Ekspresi</span>
+                    <h2 id="totalEkspresi">0</h2>
+                </div>
+            </div>
+
+            <div class="message-section">
+                <h2>Pesan Masuk</h2>
+
+                <select id="filterPesan" onchange="renderMessages()">
+                    <option value="semua">Semua pesan</option>
+                    <option value="Aspirasi Sekolah">Aspirasi</option>
+                    <option value="Ruang Ekspresi">Ruang Ekspresi</option>
+                </select>
+
+                <div id="messageList"></div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>SUARA KITA · Ruang aspirasi dan ekspresi siswa</p>
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+</body>
+</html>
