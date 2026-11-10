@@ -696,3 +696,82 @@ footer {
     height: 38px;
     object-fit: contain;
 }
+
+/* TRACK FLOWS AREA */
+
+.track-leaderboard,
+.track-schedule {
+    margin-top: 40px;
+}
+
+.track-leaderboard h2,
+.track-schedule h2 {
+    margin-bottom: 18px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 22px;
+}
+
+#trackRequestStatus {
+    margin-top: 15px;
+    color: var(--green);
+    font-size: 13px;
+}
+
+#trackLeaderboard,
+#trackScheduleList {
+    display: grid;
+    gap: 12px;
+}
+
+#track .content {
+    max-width: 850px;
+}
+
+#track form {
+    max-width: 550px;
+}
+
+#track label {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .track-leaderboard h2,
+    .track-schedule h2 {
+        font-size: 19px;
+    }
+}
+
+/* TOMBOL TRACK FLOWS */
+
+nav button {
+    cursor: pointer;
+}
+
+nav button[onclick="showPage('track')"] {
+    color: var(--green);
+    font-weight: 700;
+}
+
+nav button[onclick="showPage('track')"]:hover {
+    background: var(--green);
+    color: white;
+    border-radius: 8px;
+}
+
+/* TOMBOL TRACK FLOWS */
+
+ nav button[onclick="showPage('track')"] {
+    background: transparent;
+    color: var(--muted);
+    padding: 11px 13px;
+    border-radius: 7px;
+    font-weight: 400;
+    transition: .2s;
+}
+
+nav button[onclick="showPage('track')"]:hover {
+    background: var(--bg);
+    color: var(--green);
+}

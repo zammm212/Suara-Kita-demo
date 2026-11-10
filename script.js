@@ -554,6 +554,155 @@ window.renderMessages = function (data = []) {
     });
 };
 
+  // TRACK FLOWS AREA
+
+const trackForm = document.getElementById("trackRequestForm");
+
+if (trackForm) {
+    trackForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const status = document.getElementById("trackRequestStatus");
+        const spotifyUrl = document.getElementById("trackSpotify").value.trim();
+
+        if (
+            spotifyUrl &&
+            !/^https:\/\/open\.spotify\.com\/(track|intl-[a-z]{2}\/track)\/[a-zA-Z0-9]+/i.test(spotifyUrl)
+        ) {
+            status.textContent = "Link Spotify tidak valid.";
+            return;
+        }
+
+        status.textContent = "Mengirim request...";
+
+        const { data, error } = await supabaseClient.rpc(
+            "submit_track_request",
+            {
+                input_title: document.getElementById("trackTitle").value.trim(),
+                input_artist: document.getElementById("trackArtist").value.trim(),
+                input_play_date: document.getElementById("trackDate").value,
+                input_requester_name: document.getElementById("trackRequester").value.trim(),
+                input_requester_class: document.getElementById("trackClass").value.trim(),
+                input_spotify_url: spotifyUrl || null
+            }
+        );
+
+        if (error) {
+            console.error(error);
+            status.textContent = error.message;
+            return;
+        }
+
+        status.textContent = "Request berhasil dikirim!";
+        this.reset();
+
+        await loadTrackLeaderboard();
+        await loadTrackSchedules();
+    });
+}
+
+
+// LEADERBOARD TOP 12
+async function loadTrackLeaderboard() {
+    const container = document.getElementById("trackLeaderboard");
+    if (!container) return;
+
+    container.textContent = "Memuat leaderboard...";
+
+    const { data, error } = await supabaseClient.rpc(
+        "get_track_leaderboard"
+    );
+
+    container.replaceChildren();
+
+    if (error) {
+        console.error(error);
+        container.textContent = "Gagal memuat leaderboard.";
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        container.textContent = "Belum ada request lagu.";
+        return;
+    }
+
+    data.forEach((song, index) => {
+        const card = document.createElement("div");
+        card.className = "message-card";
+
+        const title = document.createElement("h3");
+        title.textContent = `${index + 1}. ${song.title}`;
+
+        const artist = document.createElement("p");
+        artist.textContent = "Artis: " + song.artist;
+
+        const total = document.createElement("p");
+        total.textContent = "Total request: " + song.total_requests;
+
+        card.append(title, artist, total);
+        container.appendChild(card);
+    });
+}
+
+
+// JADWAL PEMUTARAN
+async function loadTrackSchedules() {
+    const container = document.getElementById("trackScheduleList");
+    if (!container) return;
+
+    container.textContent = "Memuat jadwal...";
+
+    const { data, error } = await supabaseClient.rpc(
+        "get_track_schedules"
+    );
+
+    container.replaceChildren();
+
+    if (error) {
+        console.error(error);
+        container.textContent = "Gagal memuat jadwal.";
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        container.textContent = "Belum ada jadwal pemutaran.";
+        return;
+    }
+
+    data.forEach(song => {
+        const card = document.createElement("div");
+        card.className = "message-card";
+
+        const title = document.createElement("h3");
+        title.textContent = song.title;
+
+        const artist = document.createElement("p");
+        artist.textContent = "Artis: " + song.artist;
+
+        const date = document.createElement("p");
+        date.textContent = "Tanggal: " +
+            new Date(song.play_date + "T00:00:00").toLocaleDateString("id-ID");
+
+        const notes = document.createElement("p");
+        notes.textContent = song.notes || "";
+
+        card.append(title, artist, date, notes);
+        container.appendChild(card);
+    });
+}
+
+
+// MUAT DATA SAAT HALAMAN TRACK DIBUKA
+const originalShowPage = window.showPage;
+
+window.showPage = async function(pageId) {
+    await originalShowPage(pageId);
+
+    if (pageId === "track") {
+        await loadTrackLeaderboard();
+        await loadTrackSchedules();
+    }
+};
 
     // PULIHKAN SESSION LOGIN SAAT WEB DIBUKA KEMBALI
     if (isLoggedIn) {

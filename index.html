@@ -19,9 +19,10 @@
             <button onclick="showPage('aspirasi')">Aspirasi</button>
             <button onclick="showPage('ekspresi')">Ruang Ekspresi</button>
             <button onclick="showPage('lacak')">Lacak Pesan</button>
+          <button onclick="showPage('track')">Track Flows Area</button>
         </nav>
     </div>
-
+  
     <button class="menu-button" onclick="toggleMenu()" aria-label="Buka menu">
     <img src="assets/logo.png" alt="Logo Suara Simpatig">
     </button>
@@ -33,6 +34,11 @@
                 Login OSIS
             </button>
 
+          <button onclick="menuNavigate('tutorial')">
+    <span>▣</span>
+    Tutorial
+          </button>
+          
             <button onclick="menuNavigate('keterangan')">
                 <span>ⓘ</span>
                 Keterangan
@@ -98,6 +104,10 @@
                     Kirim Aspirasi
                 </button>
 
+              <button class="secondary" onclick="showPage('tutorial')">
+    Tutorial
+              </button>
+              
                 <button class="secondary" onclick="showPage('ekspresi')">
                     Ruang Ekspresi
                 </button>
@@ -161,6 +171,85 @@
     </div>
 </section>
 
+  
+<!-- TRACK FLOWS AREA -->
+<section id="track" class="page">
+    <div class="content">
+        <p class="tag">TRACK FLOWS AREA</p>
+        <h1>Music for<br>your school.</h1>
+
+        <p>Request lagu yang ingin kamu dengarkan di sekolah.</p>
+
+        <form id="trackRequestForm">
+            <input
+                type="text"
+                id="trackTitle"
+                placeholder="Judul lagu"
+                maxlength="150"
+                required
+            >
+
+            <input
+                type="text"
+                id="trackArtist"
+                placeholder="Nama penyanyi"
+                maxlength="100"
+                required
+            >
+
+            <input
+                type="url"
+                id="trackSpotify"
+                placeholder="Link Spotify (opsional)"
+            >
+
+            <input
+                type="text"
+                id="trackRequester"
+                placeholder="Nama kamu"
+                maxlength="80"
+                required
+            >
+
+            <input
+                type="text"
+                id="trackClass"
+                placeholder="Kelas"
+                maxlength="20"
+                required
+            >
+
+            <label for="trackDate">Tanggal pemutaran</label>
+            <input
+                type="date"
+                id="trackDate"
+                required
+            >
+
+            <button class="primary" type="submit">
+                Kirim Request
+            </button>
+        </form>
+
+        <p id="trackRequestStatus"></p>
+
+        <div class="track-leaderboard">
+            <h2>Top 12 Lagu</h2>
+            <div id="trackLeaderboard">
+                Memuat leaderboard...
+            </div>
+        </div>
+
+        <div class="track-schedule">
+            <h2>Jadwal Pemutaran</h2>
+            <div id="trackScheduleList">
+                Memuat jadwal...
+            </div>
+        </div>
+    </div>
+</section>
+
+  
     <!-- LACAK PESAN -->
     <section id="lacak" class="page">
         <div class="content">
@@ -179,6 +268,40 @@
     </section>
 
 
+  <!-- TUTORIAL -->
+<section id="tutorial" class="page">
+    <div class="content">
+        <p class="tag">PANDUAN PENGGUNA</p>
+        <h1>Cara menggunakan suara simpatig</h1>
+
+        <div class="feature-list">
+            <div class="feature-card">
+                <h3>01. Kirim Aspirasi</h3>
+                <p>Buka menu Aspirasi, isi kategori dan pesan yang ingin disampaikan. Nama dan kelas boleh dikosongkan.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>02. Simpan Kode</h3>
+                <p>Setelah mengirim aspirasi, kamu akan mendapatkan kode khusus. Simpan kode tersebut.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>03. Lacak Pesan</h3>
+                <p>Buka menu Lacak Pesan, masukkan kode yang sudah didapatkan, lalu tekan Lacak Sekarang.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>04. Baca Balasan</h3>
+                <p>Periksa status aspirasi dan riwayat balasan dari OSIS melalui halaman pelacakan.</p>
+            </div>
+        </div>
+
+        <button class="secondary" onclick="showPage('home')">
+            ← Kembali ke Beranda
+        </button>
+    </div>
+</section>
+  
     <!-- KETERANGAN -->
     <section id="keterangan" class="page">
         <div class="content">
