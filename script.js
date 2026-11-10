@@ -127,7 +127,7 @@ window.showPage = async function (pageId) {
     // DATA
     function getData() {
         try {
-            return JSON.parse(localStorage.getItem("suaraKita")) || [];
+            return JSON.parse(localStorage.getItem("suarasimpatig")) || [];
         } catch {
             return [];
         }
@@ -135,7 +135,7 @@ window.showPage = async function (pageId) {
 
 
     function saveData(data) {
-        localStorage.setItem("suaraKita", JSON.stringify(data));
+        localStorage.setItem("suarasimpatig", JSON.stringify(data));
     }
 
 
