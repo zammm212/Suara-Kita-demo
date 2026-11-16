@@ -775,3 +775,64 @@ nav button[onclick="showPage('track')"]:hover {
     background: var(--bg);
     color: var(--green);
 }
+/* DASHBOARD TRACK FLOWS */
+
+.track-admin-section {
+    margin-top: 45px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+}
+
+.track-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.track-admin-header h2 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.track-admin-header p:not(.tag) {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+#trackRequestAdminList {
+    display: grid;
+    gap: 12px;
+}
+/* TRACK REQUEST ADMIN ACTIONS */
+
+.track-admin-section .message-card button {
+    padding: 10px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.track-admin-section .message-card button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.track-admin-section .message-card button.secondary {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+.track-schedule-status {
+    color: #278653;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 12px;
+}
+.coming-icon img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}

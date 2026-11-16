@@ -19,7 +19,7 @@
             <button onclick="showPage('aspirasi')">Aspirasi</button>
             <button onclick="showPage('ekspresi')">Ruang Ekspresi</button>
             <button onclick="showPage('lacak')">Lacak Pesan</button>
-          <button onclick="showPage('track')">Track Flows Area</button>
+          <button onclick="showPage('track')">Beat Time Area</button>
         </nav>
     </div>
   
@@ -152,7 +152,9 @@
     <!-- RUANG EKSPRESI -->
 <section id="ekspresi" class="page">
     <div class="coming-soon">
-        <div class="coming-icon">✦</div>
+<div class="coming-icon">
+    <img src="assets/logo.png" alt="Ruang Ekspresi">
+</div>
 
         <p class="tag">RUANG EKSPRESI</p>
 
@@ -172,10 +174,10 @@
 </section>
 
   
-<!-- TRACK FLOWS AREA -->
+<!-- Beat Time AREA -->
 <section id="track" class="page">
     <div class="content">
-        <p class="tag">TRACK FLOWS AREA</p>
+        <p class="tag">BEAT TIME AREA</p>
         <h1>Music for<br>your school.</h1>
 
         <p>Request lagu yang ingin kamu dengarkan di sekolah.</p>
@@ -432,6 +434,45 @@
                 </select>
 
                 <div id="messageList"></div>
+              <div class="track-admin-section">
+    <div class="track-admin-header">
+        <div>
+            <p class="tag">Beat Time AREA</p>
+            <h2>Request Lagu Masuk</h2>
+            <p id="trackAdminPeriod">Memuat periode...</p>
+        </div>
+
+        <button class="secondary" onclick="loadTrackAdminRequests()">
+            Refresh
+        </button>
+    </div>
+
+    <div id="trackRequestAdminList">
+        Memuat request lagu...
+    </div>
+
+                <div class="track-reset-section">
+    <h3>Reset Beat Time Area</h3>
+    <p>Mulai periode request lagu yang baru.</p>
+
+    <input
+        type="password"
+        id="trackResetCode"
+        placeholder="Masukkan kode khusus OSIS"
+    >
+
+    <button
+        class="secondary"
+        type="button"
+        onclick="resetTrackPeriod()"
+    >
+        Reset Leaderboard
+    </button>
+
+    <p id="trackResetStatus"></p>
+                </div>
+                
+              </div>
             </div>
 
         </div>

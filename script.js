@@ -9,8 +9,8 @@ const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-  
-    // CEK SESSION SUPABASE
+
+// CEK SESSION SUPABASE
 let isLoggedIn = false;
 
 async function checkLogin() {
@@ -20,7 +20,7 @@ async function checkLogin() {
 }
 
 
-    /// NAVIGASI
+// NAVIGASI
 window.showPage = async function (pageId) {
 
     if (pageId === "dashboard") {
@@ -46,108 +46,109 @@ window.showPage = async function (pageId) {
 
     if (pageId === "dashboard") {
         await updateDashboard();
+        await loadTrackAdminRequests();
+    }
+
+    if (pageId === "track") {
+        await loadTrackLeaderboard();
+        
     }
 };
 
-    // MENU POJOK KANAN
-    window.toggleMenu = function () {
-        document.getElementById("dropdownMenu")
-            .classList.toggle("show");
-    };
+
+// MENU POJOK KANAN
+window.toggleMenu = function () {
+    document.getElementById("dropdownMenu")
+        .classList.toggle("show");
+};
+
+window.closeMenu = function () {
+    document.getElementById("dropdownMenu")
+        .classList.remove("show");
+
+    document.getElementById("settingsPanel")
+        .classList.remove("show");
+};
+
+window.menuNavigate = function (pageId) {
+    showPage(pageId);
+};
 
 
-    window.closeMenu = function () {
-        document.getElementById("dropdownMenu")
-            .classList.remove("show");
-
-        document.getElementById("settingsPanel")
-            .classList.remove("show");
-    };
+// SETTING
+window.toggleSettings = function () {
+    document.getElementById("settingsPanel")
+        .classList.toggle("show");
+};
 
 
-    window.menuNavigate = function (pageId) {
-        showPage(pageId);
-    };
+// TEMA
+window.toggleTheme = function () {
+    document.body.classList.toggle("dark");
+
+    const dark = document.body.classList.contains("dark");
+
+    localStorage.setItem("suaraTheme", dark ? "dark" : "light");
+
+    document.getElementById("themeToggle").textContent =
+        dark ? "Mode Terang" : "Mode Gelap";
+};
+
+if (localStorage.getItem("suaraTheme") === "dark") {
+    document.body.classList.add("dark");
+    document.getElementById("themeToggle").textContent = "Mode Terang";
+}
 
 
-    // SETTING
-    window.toggleSettings = function () {
-        document.getElementById("settingsPanel")
-            .classList.toggle("show");
-    };
+// UKURAN TEKS
+window.changeFontSize = function () {
+    const value = document.getElementById("fontSetting").value;
+
+    document.body.classList.toggle("large-text", value === "large");
+
+    localStorage.setItem("suaraFont", value);
+};
+
+const savedFont = localStorage.getItem("suaraFont");
+
+if (savedFont) {
+    document.getElementById("fontSetting").value = savedFont;
+    changeFontSize();
+}
 
 
-    // TEMA
-    window.toggleTheme = function () {
-        document.body.classList.toggle("dark");
+// KLIK DI LUAR MENU UNTUK MENUTUP
+document.addEventListener("click", function (event) {
+    const menu = document.querySelector(".menu-area");
 
-        const dark = document.body.classList.contains("dark");
-
-        localStorage.setItem("suaraTheme", dark ? "dark" : "light");
-
-        document.getElementById("themeToggle").textContent =
-            dark ? "Mode Terang" : "Mode Gelap";
-    };
-
-
-    if (localStorage.getItem("suaraTheme") === "dark") {
-        document.body.classList.add("dark");
-        document.getElementById("themeToggle").textContent = "Mode Terang";
+    if (menu && !menu.contains(event.target)) {
+        closeMenu();
     }
+});
 
 
-    // UKURAN TEKS
-    window.changeFontSize = function () {
-        const value = document.getElementById("fontSetting").value;
-
-        document.body.classList.toggle("large-text", value === "large");
-
-        localStorage.setItem("suaraFont", value);
-    };
-
-
-    const savedFont = localStorage.getItem("suaraFont");
-
-    if (savedFont) {
-        document.getElementById("fontSetting").value = savedFont;
-        changeFontSize();
+// DATA
+function getData() {
+    try {
+        return JSON.parse(localStorage.getItem("suarasimpatig")) || [];
+    } catch {
+        return [];
     }
+}
+
+function saveData(data) {
+    localStorage.setItem("suarasimpatig", JSON.stringify(data));
+}
+
+function generateCode() {
+    return "SK-" + Math.random()
+        .toString(36)
+        .substring(2, 10)
+        .toUpperCase();
+}
 
 
-    // KLIK DI LUAR MENU UNTUK MENUTUP
-    document.addEventListener("click", function (event) {
-        const menu = document.querySelector(".menu-area");
-
-        if (menu && !menu.contains(event.target)) {
-            closeMenu();
-        }
-    });
-
-
-    // DATA
-    function getData() {
-        try {
-            return JSON.parse(localStorage.getItem("suarasimpatig")) || [];
-        } catch {
-            return [];
-        }
-    }
-
-
-    function saveData(data) {
-        localStorage.setItem("suarasimpatig", JSON.stringify(data));
-    }
-
-
-    function generateCode() {
-        return "SK-" + Math.random()
-            .toString(36)
-            .substring(2, 10)
-            .toUpperCase();
-    }
-
-
-    // FORM ASPIRASI
+// FORM ASPIRASI
 document.getElementById("aspirasiForm")
     .addEventListener("submit", async function (event) {
 
@@ -183,7 +184,7 @@ document.getElementById("aspirasiForm")
 });
 
 
- // FORM EKSPRESI SEMENTARA DINONAKTIFKAN
+// FORM EKSPRESI SEMENTARA DINONAKTIFKAN
 const ekspresiForm = document.getElementById("ekspresiForm");
 
 if (ekspresiForm) {
@@ -233,41 +234,39 @@ document.getElementById("lacakForm")
         const p = document.createElement("p");
         p.textContent = teks;
         tempatHasil.appendChild(p);
-      
     });
-  
-  const judulBalasan = document.createElement("h3");
-judulBalasan.textContent = "Riwayat Balasan OSIS";
-tempatHasil.appendChild(judulBalasan);
 
-if (!hasilData.balasan || hasilData.balasan.length === 0) {
-    const kosong = document.createElement("p");
-    kosong.textContent = "Belum ada balasan dari OSIS.";
-    tempatHasil.appendChild(kosong);
-} else {
-    hasilData.balasan.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "message-card";
+    const judulBalasan = document.createElement("h3");
+    judulBalasan.textContent = "Riwayat Balasan OSIS";
+    tempatHasil.appendChild(judulBalasan);
 
-        const pengirim = document.createElement("p");
-        pengirim.textContent = "Pengirim: " + item.pengirim;
+    if (!hasilData.balasan || hasilData.balasan.length === 0) {
+        const kosong = document.createElement("p");
+        kosong.textContent = "Belum ada balasan dari OSIS.";
+        tempatHasil.appendChild(kosong);
+    } else {
+        hasilData.balasan.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "message-card";
 
-        const pesan = document.createElement("p");
-        pesan.textContent = item.pesan;
+            const pengirim = document.createElement("p");
+            pengirim.textContent = "Pengirim: " + item.pengirim;
 
-        const tanggal = document.createElement("p");
-        tanggal.textContent =
-            new Date(item.created_at).toLocaleString("id-ID");
+            const pesan = document.createElement("p");
+            pesan.textContent = item.pesan;
 
-        card.append(pengirim, pesan, tanggal);
-        tempatHasil.appendChild(card);
-    });
-}
-  
+            const tanggal = document.createElement("p");
+            tanggal.textContent =
+                new Date(item.created_at).toLocaleString("id-ID");
+
+            card.append(pengirim, pesan, tanggal);
+            tempatHasil.appendChild(card);
+        });
+    }
 });
 
 
-    /// LOGIN SUPABASE
+// LOGIN SUPABASE
 document.getElementById("loginForm")
     .addEventListener("submit", async function (event) {
 
@@ -304,14 +303,14 @@ document.getElementById("loginForm")
 });
 
 
-    // KELUAR DASHBOARD TANPA LOGOUT
-    window.closeDashboard = function () {
-        if (sessionStorage.getItem("osisLogin") === "true") {
-            showPage("beranda");
-        } else {
-            showPage("login");
-        }
-    };
+// KELUAR DASHBOARD TANPA LOGOUT
+window.closeDashboard = function () {
+    if (sessionStorage.getItem("osisLogin") === "true") {
+        showPage("beranda");
+    } else {
+        showPage("login");
+    }
+};
 
 
 // LOGOUT SUPABASE
@@ -330,8 +329,45 @@ window.logout = async function () {
     alert("Berhasil logout.");
 };
 
+  // RESET TRACK FLOWS AREA
+window.resetTrackPeriod = async function() {
+    const codeInput = document.getElementById("trackResetCode");
+    const status = document.getElementById("trackResetStatus");
 
-    // DASHBOARD SUPABASE
+    const code = codeInput.value.trim();
+
+    if (!code) {
+        status.textContent = "Masukkan kode khusus OSIS.";
+        return;
+    }
+
+    if (!confirm("Yakin reset leaderboard dan memulai periode baru?")) {
+        return;
+    }
+
+    status.textContent = "Memproses reset...";
+
+    const { error } = await supabaseClient.rpc(
+        "reset_track_period",
+        {
+            input_code: code
+        }
+    );
+
+    if (error) {
+        console.error(error);
+        status.textContent = "Reset gagal. Periksa kode atau akses OSIS.";
+        return;
+    }
+
+    codeInput.value = "";
+    status.textContent = "Leaderboard berhasil direset.";
+
+    await loadTrackAdminRequests();
+    await loadTrackLeaderboard();
+};
+
+// DASHBOARD SUPABASE
 window.updateDashboard = async function () {
 
     const loggedIn = await checkLogin();
@@ -361,11 +397,27 @@ window.updateDashboard = async function () {
     document.getElementById("totalEkspresi").textContent = 0;
 
     renderMessages(data);
-}
+};
 
+// SIMPAN KODE RESET
+window.setTrackResetCode = async function() {
+    const code = "OSIS2627";
 
-        
- // PESAN MASUK SUPABASE
+    const { error } = await supabaseClient.rpc(
+        "set_track_reset_code",
+        { input_code: code }
+    );
+
+    if (error) {
+        console.error(error);
+        alert("Gagal menyimpan kode reset.");
+        return;
+    }
+
+    alert("Kode reset berhasil disimpan.");
+};
+  
+// PESAN MASUK SUPABASE
 window.renderMessages = function (data = []) {
 
     const container = document.getElementById("messageList");
@@ -554,8 +606,10 @@ window.renderMessages = function (data = []) {
     });
 };
 
-  // TRACK FLOWS AREA
 
+// TRACK FLOWS AREA
+
+// FORM REQUEST LAGU
 const trackForm = document.getElementById("trackRequestForm");
 
 if (trackForm) {
@@ -576,16 +630,16 @@ if (trackForm) {
         status.textContent = "Mengirim request...";
 
         const { data, error } = await supabaseClient.rpc(
-            "submit_track_request",
-            {
-                input_title: document.getElementById("trackTitle").value.trim(),
-                input_artist: document.getElementById("trackArtist").value.trim(),
-                input_play_date: document.getElementById("trackDate").value,
-                input_requester_name: document.getElementById("trackRequester").value.trim(),
-                input_requester_class: document.getElementById("trackClass").value.trim(),
-                input_spotify_url: spotifyUrl || null
-            }
-        );
+    "submit_track_request",
+    {
+        input_title: document.getElementById("trackTitle").value.trim(),
+        input_artist: document.getElementById("trackArtist").value.trim(),
+        input_play_date: new Date().toLocaleDateString("en-CA"),
+        input_requester_name: document.getElementById("trackRequester").value.trim(),
+        input_requester_class: document.getElementById("trackClass").value.trim(),
+        input_spotify_url: spotifyUrl || null
+    }
+);
 
         if (error) {
             console.error(error);
@@ -597,7 +651,7 @@ if (trackForm) {
         this.reset();
 
         await loadTrackLeaderboard();
-        await loadTrackSchedules();
+        
     });
 }
 
@@ -609,9 +663,7 @@ async function loadTrackLeaderboard() {
 
     container.textContent = "Memuat leaderboard...";
 
-    const { data, error } = await supabaseClient.rpc(
-        "get_track_leaderboard"
-    );
+    const { data, error } = await supabaseClient.rpc("get_track_leaderboard");
 
     container.replaceChildren();
 
@@ -643,71 +695,173 @@ async function loadTrackLeaderboard() {
         container.appendChild(card);
     });
 }
+  // JADWAL PEMUTARANl
 
+// REQUEST LAGU DASHBOARD OSIS
+window.loadTrackAdminRequests = async function() {
+    const container = document.getElementById("trackRequestAdminList");
+    const periodLabel = document.getElementById("trackAdminPeriod");
 
-// JADWAL PEMUTARAN
-async function loadTrackSchedules() {
-    const container = document.getElementById("trackScheduleList");
     if (!container) return;
 
-    container.textContent = "Memuat jadwal...";
+    container.textContent = "Memuat request lagu...";
+
+    const { data: period, error: periodError } = await supabaseClient
+        .from("track_periods")
+        .select("id, started_at")
+        .is("ended_at", null)
+        .maybeSingle();
+
+    if (periodError || !period) {
+        console.error(periodError);
+        container.textContent = "Periode aktif tidak ditemukan.";
+        if (periodLabel) periodLabel.textContent = "Tidak ada periode aktif";
+        return;
+    }
+
+    if (periodLabel) {
+        periodLabel.textContent = "Dimulai: " +
+            new Date(period.started_at).toLocaleDateString("id-ID");
+    }
 
     const { data, error } = await supabaseClient.rpc(
-        "get_track_schedules"
+        "get_track_requests",
+        { input_period_id: period.id }
     );
 
     container.replaceChildren();
 
     if (error) {
         console.error(error);
-        container.textContent = "Gagal memuat jadwal.";
+        container.textContent = "Gagal memuat request lagu.";
         return;
     }
 
     if (!data || data.length === 0) {
-        container.textContent = "Belum ada jadwal pemutaran.";
+        container.textContent = "Belum ada request lagu.";
         return;
     }
 
-    data.forEach(song => {
+    data.forEach(request => {
         const card = document.createElement("div");
         card.className = "message-card";
 
         const title = document.createElement("h3");
-        title.textContent = song.title;
+        title.textContent = request.title;
 
         const artist = document.createElement("p");
-        artist.textContent = "Artis: " + song.artist;
+        artist.textContent = "Artis: " + request.artist;
+
+        const requester = document.createElement("p");
+        requester.textContent = "Peminta: " +
+            request.requester_name + " (" +
+            request.requester_class + ")";
 
         const date = document.createElement("p");
-        date.textContent = "Tanggal: " +
-            new Date(song.play_date + "T00:00:00").toLocaleDateString("id-ID");
+        date.textContent = "Tanggal pemutaran: " +
+            new Date(request.play_date + "T00:00:00")
+                .toLocaleDateString("id-ID");
 
-        const notes = document.createElement("p");
-        notes.textContent = song.notes || "";
+        const created = document.createElement("p");
+        created.textContent = "Dikirim: " +
+            new Date(request.created_at).toLocaleString("id-ID");
 
-        card.append(title, artist, date, notes);
+        const status = document.createElement("p");
+        status.textContent = "Status: " + request.status;
+      
+status.className = "track-request-status";
+
+if (request.status === "disetujui") {
+    status.classList.add("approved");
+} else if (request.status === "ditolak") {
+    status.classList.add("rejected");
+} else {
+    status.classList.add("pending");
+}
+        card.append(title, artist, requester, date, created, status);
+
+        if (request.status === "menunggu") {
+            const actions = document.createElement("div");
+            actions.style.display = "flex";
+            actions.style.gap = "10px";
+            actions.style.marginTop = "15px";
+
+            const approveButton = document.createElement("button");
+            approveButton.type = "button";
+            approveButton.className = "primary";
+            approveButton.textContent = "Setujui";
+
+            const rejectButton = document.createElement("button");
+            rejectButton.type = "button";
+            rejectButton.className = "secondary";
+            rejectButton.textContent = "Tolak";
+
+            approveButton.addEventListener("click", async function() {
+                approveButton.disabled = true;
+                rejectButton.disabled = true;
+
+                const { data, error } = await supabaseClient.rpc(
+                    "update_track_request_status",
+                    {
+                        input_request_id: request.request_id,
+                        input_status: "disetujui"
+                    }
+                );
+
+                if (error || !data) {
+                    console.error(error);
+                    alert("Gagal menyetujui request.");
+                    approveButton.disabled = false;
+                    rejectButton.disabled = false;
+                    return;
+                }
+
+                alert("Request berhasil disetujui dan masuk jadwal.");
+
+                await loadTrackAdminRequests();
+                
+            });
+
+            rejectButton.addEventListener("click", async function() {
+                if (!confirm("Yakin ingin menolak request ini?")) return;
+
+                approveButton.disabled = true;
+                rejectButton.disabled = true;
+
+                const { data, error } = await supabaseClient.rpc(
+                    "update_track_request_status",
+                    {
+                        input_request_id: request.request_id,
+                        input_status: "ditolak"
+                    }
+                );
+
+                if (error || !data) {
+                    console.error(error);
+                    alert("Gagal menolak request.");
+                    approveButton.disabled = false;
+                    rejectButton.disabled = false;
+                    return;
+                }
+
+                alert("Request berhasil ditolak.");
+
+                await loadTrackAdminRequests();
+            });
+
+            actions.append(approveButton, rejectButton);
+            card.appendChild(actions);
+        }
+
         container.appendChild(card);
     });
-}
-
-
-// MUAT DATA SAAT HALAMAN TRACK DIBUKA
-const originalShowPage = window.showPage;
-
-window.showPage = async function(pageId) {
-    await originalShowPage(pageId);
-
-    if (pageId === "track") {
-        await loadTrackLeaderboard();
-        await loadTrackSchedules();
-    }
 };
 
-    // PULIHKAN SESSION LOGIN SAAT WEB DIBUKA KEMBALI
-    if (isLoggedIn) {
+// PULIHKAN SESSION LOGIN SAAT WEB DIBUKA KEMBALI
+checkLogin().then(loggedIn => {
+    if (loggedIn) {
         updateDashboard();
     }
+});
 
 });
-  
